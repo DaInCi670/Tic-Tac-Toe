@@ -1,46 +1,29 @@
 "use strict";
 
-function Gameboard() {
-  const rows = 8;
-  const board = [];
+function GameBoard() {
+  let played = "";
+  const board = ["", "", "", "", "", "", "", "", ""];
+  const winCon = [
+    [0, 1, 2],
+    [1, 3, 6],
+    [0, 4, 8],
+    [1, 4, 7],
+    [2, 5, 8],
+    [3, 4, 5],
+    [6, 7, 8],
+  ];
 
-  for (let i = 0; i < rows; i++) {
-    board[i] = [];
-  }
-  const getBoard = () => board;
+  const getPlayed = () => played;
 
-  const winCon = (x) => {
-    if (board[0][0] === x && board[1][0] === x && board[2][0] === x) {
-      console.log(x + " Won");
-    }
-    if (board[0][0] === x && board[5][0] === x && board[8][0] === x) {
-      console.log(x + " Won");
-    }
-    if (board[0][0] === x && board[3][0] === x && board[6][0] === x) {
-      console.log(x + " Won");
-    }
-    if (board[1][0] === x && board[4][0] === x && board[7][0] === x) {
-      console.log(x + " Won");
-    }
-    if (board[2][0] === x && board[4][0] === x && board[6][0] === x) {
-      console.log(x + " Won");
-    }
-    if (board[2][0] === x && board[5][0] === x && board[8][0] === x) {
-      console.log(x + " Won");
-    }
-    if (board[3][0] === x && board[4][0] === x && board[5][0] === x) {
-      console.log(x + " Won");
-    }
-    if (board[6][0] === x && board[7][0] === x && board[8][0] === x) {
-      console.log(x + " Won");
-    } else return;
-  };
-
-  const dropToken = (box, player) => {
-    if (Number(box) > 8 || board[box].length) {
+  const addToken = (box, player) => {
+    if (box > 8 || board[box]) {
+      played = false;
       return;
     }
-    return board[box].push(player);
+    board[box] = player;
+    played = true;
   };
-  return { getBoard, dropToken, winCon };
+  const getBoard = () => board;
+  const getWinCon = () => winCon;
+  return { getBoard, addToken, getWinCon, getPlayed };
 }

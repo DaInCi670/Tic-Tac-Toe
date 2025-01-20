@@ -113,3 +113,55 @@ function GameBoard() {
     };
   }
   
+
+  function displayController() {
+    const startGame = gameController();
+    const resetButton = document.querySelector(".draw");
+    const turns = document.querySelector(".winner-score");
+    const cells = document.querySelectorAll(".cells");
+  
+    const changeColors = () => {
+      cells.forEach((cell) => {
+        if (cell.textContent === "O") {
+          cell.style.color = "yellow";
+        } else cell.style.color = "#70cbf6";
+      });
+    };
+  
+    resetButton.addEventListener("click", () => {
+      startGame.resetStatus();
+      cells.forEach((cell) => {
+        cell.textContent = "";
+        turns.textContent = `${startGame.getActivePlayer().token}'s turn`;
+        cell.style.pointerEvents = "auto";
+      });
+    });
+  
+    turns.textContent = `${startGame.getActivePlayer().token}'s turn`;
+  
+    cells.forEach((cell) => {
+      cell.addEventListener("click", (e) => {
+        if (e.target.textContent) {
+          return;
+        }
+        e.target.textContent = `${startGame.getActivePlayer().token}`;
+        startGame.playRound(e.target.dataset.cell);
+        changeColors();
+        if (startGame.getWinner() === true) {
+          turns.textContent = `${startGame.getActivePlayer().token} Won!`;
+          cells.forEach((cell) => {
+            cell.style.pointerEvents = "none";
+          });
+          return;
+        }
+        if (startGame.getTie() === true) {
+          turns.textContent = `Its a Tie`;
+          return;
+        }
+        turns.textContent = `${startGame.getActivePlayer().token}'s turn`;
+      });
+    });
+  }
+  
+  displayController();
+  
